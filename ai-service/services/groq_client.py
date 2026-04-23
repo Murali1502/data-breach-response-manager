@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 class GroqClient:
     def __init__(self, api_key: str = None):
         self.client = Groq(api_key=api_key or os.getenv('GROQ_API_KEY'))
-        self.model = "llama3-8b-8192"  # or "mixtral-8x7b-32768"
+        self.model = "llama-3.1-8b-instant"
         self.max_retries = 3
 
     def describe_breach(self, breach_data: Dict[str, Any]) -> str:
@@ -34,7 +34,7 @@ class GroqClient:
                 logger.warning(f"Attempt {attempt + 1} failed: {str(e)}")
                 if attempt == self.max_retries - 1:
                     raise
-                time.sleep(2 ** attempt)  # Exponential backoff
+                time.sleep(2 ** attempt)
         return ""
 
     def _build_prompt(self, breach_data: Dict[str, Any]) -> str:
