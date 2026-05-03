@@ -68,7 +68,9 @@ const ListPage = () => {
             <tbody className="divide-y divide-gray-200 bg-white">
               {breaches.map((breach) => (
                 <tr key={breach.id}>
-                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">{breach.title}</td>
+                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-blue-600 hover:text-blue-900">
+                    <Link to={`/detail/${breach.id}`}>{breach.title}</Link>
+                  </td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{breach.status}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{breach.severity}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
