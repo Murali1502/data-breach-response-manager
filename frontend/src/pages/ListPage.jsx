@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
 
 const ListPage = () => {
@@ -9,12 +10,9 @@ const ListPage = () => {
   useEffect(() => {
     const fetchBreaches = async () => {
       try {
-        // We will call the real GET /all API once the backend is ready.
-        // For now, this points to where the API will be.
         const response = await api.get('/api/breaches/all');
         setBreaches(response.data.content || response.data);
       } catch (err) {
-        // As the backend is not running yet, we expect an error or empty state
         setError('Failed to load data. The backend server might be offline.');
         setBreaches([]);
       } finally {
@@ -27,7 +25,15 @@ const ListPage = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Data Breaches</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-800">Data Breaches</h1>
+        <Link 
+          to="/create" 
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          + Report New Breach
+        </Link>
+      </div>
       
       {loading && (
         <div className="flex justify-center items-center h-32">
@@ -56,6 +62,7 @@ const ListPage = () => {
                 <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
                 <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Severity</th>
                 <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Reported Date</th>
+                <th scope="col" className="px-3 py-3.5 text-right text-sm font-semibold text-gray-900">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
@@ -66,6 +73,9 @@ const ListPage = () => {
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{breach.severity}</td>
                   <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                     {new Date(breach.reported_date).toLocaleDateString()}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-4 text-sm text-right">
+                    <Link to={`/edit/${breach.id}`} className="text-blue-600 hover:text-blue-900">Edit</Link>
                   </td>
                 </tr>
               ))}
